@@ -15,6 +15,8 @@ public class RoleDTO {
     public RoleDTO() {
     }
 
+    //dfsdfsdfdsfsdfdfdf
+
     public RoleDTO(@NotNull String name) {
         this.name = name;
     }
