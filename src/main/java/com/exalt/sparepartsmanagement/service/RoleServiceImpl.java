@@ -1,10 +1,13 @@
 package com.exalt.sparepartsmanagement.service;
 
 
+import com.exalt.sparepartsmanagement.dto.RoleDTO;
+import com.exalt.sparepartsmanagement.mapper.RoleMapper;
 import com.exalt.sparepartsmanagement.repository.RoleRepository;
 import com.exalt.sparepartsmanagement.error.ConflictExceptions;
 import com.exalt.sparepartsmanagement.error.NotFoundExceptions;
 import com.exalt.sparepartsmanagement.model.Role;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,9 +21,11 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     RoleRepository roleRepository;
+    private RoleMapper roleMapper = Mappers.getMapper(RoleMapper.class);
+
 
     @Override
-    public List<Role> getAll(int page , int pageSize)
+    public List<RoleDTO> getAll(int page , int pageSize)
     { if (page < 1){
         throw  new NotFoundExceptions("Invalid page number");
     }
@@ -32,40 +37,40 @@ public class RoleServiceImpl implements RoleService {
          */
         Pageable paging = PageRequest.of(page-1, pageSize);
         Page<Role> pagedResult = roleRepository.findAll(paging);
-        return pagedResult.toList();
+        return roleMapper.RolesToDTOs(pagedResult.toList());
     }
 
     @Override
-    public Role get(String name) {
+    public RoleDTO get(String name) {
         Role role = roleRepository.findByName(name);
         if (role == null) {
             throw new NotFoundExceptions("Role not Found");
         } else {
-            return role;
+            return roleMapper.RoleToDTO(role);
         }
     }
 
     @Override
-    public void save(Role role) {
-        String temp = roleRepository.findByNameNQ(role.getName());
+    public void save(RoleDTO roleDTO) {
+        String temp = roleRepository.findByNameNQ(roleDTO.getName());
         if (temp != null) {
             throw new ConflictExceptions(String.format("There is a role with the same name ( %s ) ", temp));
         }
-        roleRepository.save(role);
+        roleRepository.save(roleMapper.TDOToRole(roleDTO));
     }
 
     @Override
-    public void update(String name, Role role) {
+    public void update(String name, RoleDTO roleDTO) {
         Role updatingRole = roleRepository.findByName(name);
 
         if (updatingRole != null) {
 
-            String temp = roleRepository.findByNameNQ(role.getName());
+            String temp = roleRepository.findByNameNQ(roleDTO.getName());
             if (temp != null && (!temp.equals(updatingRole.getName()))) {
                 throw new ConflictExceptions(String.format("The role name ( %s ) exists by another role ", temp));
             }
 
-            updatingRole.setName(role.getName());
+            updatingRole.setName(roleDTO.getName());
             roleRepository.save(updatingRole);
         } else
             throw new NotFoundExceptions("Not found role to updating ");

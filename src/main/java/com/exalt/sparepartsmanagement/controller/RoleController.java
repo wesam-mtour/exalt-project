@@ -1,6 +1,7 @@
 package com.exalt.sparepartsmanagement.controller;
 
 
+import com.exalt.sparepartsmanagement.dto.RoleDTO;
 import com.exalt.sparepartsmanagement.model.Role;
 import com.exalt.sparepartsmanagement.service.RoleService;
 import org.slf4j.Logger;
@@ -24,28 +25,28 @@ RoleController {
     private RoleService roleService;
 
     @GetMapping(value = "/api/v1/roles", params = {"page","pageSize"})
-    public List<Role> getRoles(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize) {
+    public List<RoleDTO> getRoles(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize) {
         logger.info("Role controller method -getRoles");
         return roleService.getAll(page,pageSize);
     }
 
     @GetMapping(value = "/api/v1/roles/{name}")
-    public Role getSpecificRole(@PathVariable String name) {
+    public RoleDTO getSpecificRole(@PathVariable String name) {
         logger.info("Role controller method -getSpecificRole");
         return roleService.get(name);
     }
 
     @PostMapping(value = "/api/v1/roles")
-    public String createNewRole(@Valid @RequestBody Role role) {
+    public String createNewRole(@Valid @RequestBody RoleDTO roleDTO) {
         logger.info("Role controller method -createNewRole");
-        roleService.save(role);
+        roleService.save(roleDTO);
         return "role added successfully";
     }
 
     @PutMapping(value = "/api/v1/roles/{name}")
-    public String updateRole(@PathVariable String name, @RequestBody Role role) {
+    public String updateRole(@PathVariable String name, @RequestBody RoleDTO roleDTO) {
         logger.info("Role controller method -updateRole");
-        roleService.update(name, role);
+        roleService.update(name, roleDTO);
         return "Role updated successfully ";
     }
 

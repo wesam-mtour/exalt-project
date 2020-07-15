@@ -33,10 +33,8 @@ public class ProductServiceImpl implements ProductService {
         if (pageSize < 1) {
             throw new NotFoundExceptions("Invalid page size number");
         }
-        /**
-         *
-         */
-        Pageable paging = PageRequest.of(page - 1, pageSize);
+
+        Pageable paging = PageRequest.of((page - 1)*pageSize, pageSize);
         Page<Product> pagedResult = productRepository.findAll(paging);
         return productMapper.productsToDTOs(pagedResult.toList());
     }

@@ -1,19 +1,20 @@
 package com.exalt.sparepartsmanagement.service;
 
 
+import com.exalt.sparepartsmanagement.dto.RoleDTO;
 import com.exalt.sparepartsmanagement.model.Role;
 
 import java.util.List;
 
 public interface RoleService {
 
-    List <Role> getAll(int page , int pageSize);
+    List <RoleDTO> getAll(int page , int pageSize);
 
-    Role get(String name);
+    RoleDTO get(String name);
 
-    void save(Role role);
+    void save(RoleDTO roleDTO);
 
-    void update(String name, Role role);
+    void update(String name, RoleDTO roleDTO);
 
     void delete(String name);
 }

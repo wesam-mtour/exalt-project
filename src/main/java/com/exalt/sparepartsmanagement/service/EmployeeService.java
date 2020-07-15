@@ -13,7 +13,7 @@ public interface EmployeeService {
 
     EmployeeDTO get(String name);
 
-    void save(EmployeeDTO employeeDTO);
+    EmployeeDTO save(EmployeeDTO employeeDTO);
 
     void update(String name, EmployeeDTO employeeDTO);
 

@@ -36,8 +36,8 @@ public class EmployeeController {
     @PostMapping(value = "/api/v1/employees")
     public String createNewEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         logger.info("employee controller method -createNewEmployee");
-        employeeService.save(employeeDTO);
-        return "Employee added successfully";
+
+        return "Employee added successfully"+"\n"+employeeService.save(employeeDTO);
     }
 
     @PutMapping(value = "/api/v1/employees/{name}")

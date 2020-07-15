@@ -1,127 +1,144 @@
 package com.exalt.sparepartsmanagement.tests;
 
+import com.exalt.sparepartsmanagement.dto.ProductDTO;
+import com.exalt.sparepartsmanagement.mapper.ProductMapper;
 import com.exalt.sparepartsmanagement.repository.ProductRepository;
-import com.exalt.sparepartsmanagement.model.Product;
-import org.hibernate.Session;
+import org.junit.Assert;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 
 import javax.persistence.EntityManager;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class ProductServiceTest {
+
     @Autowired
-    ProductRepository repository;
+    private ProductRepository productRepository;
+
     @Autowired
     EntityManager entityManager;
+
+    private ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
+
+
+    @LocalServerPort
+    int localPort = 8081;
+
+    HttpHeaders headers = new HttpHeaders();
+    TestRestTemplate restTemplate = new TestRestTemplate();
+
+
+//    @BeforeEach
+//    public void create() {
+//        ProductDTO productDTo = new ProductDTO();
+//        productDTo.setOem("22");
+//        productDTo.setName("AA");
+//        productDTo.setCostPrice(1500);
+//        productDTo.setSellingPrice(2000);
+//        productDTo.setCarType("DAF");
+//        productDTo.setQuantity(66);
+//        productDTo.setProducers("wesam");
+//        productRepository.save(productMapper.DTOToProduct(productDTo));
+// }
+
+
     @Test
-    public void testCreate() {
-        Product product = new Product();
-        product.setOem("22");
-        product.setName("AA");
-        product.setCostPrice(1500);
-        product.setSellingPrice(2000);
-        product.setCarType("DAF");
-        product.setQuantity(66);
-        product.setProducers("wesam");
-        repository.save(product);
-    }
+    public ResponseEntity<ProductDTO> testGet() throws URISyntaxException {
 
-    // Read product from database
-    @Test
-    public void testRead() {
-        Product product;
-        product = repository.findByOem("22");
-        assertNotNull(product);
-        System.out.println(product);
-        //  assertEquals("AA", product.getName());
-    }
-
-    // update specific product
-    @Test
-    public void testUpdate() {
-        Product product;
-        product = repository.findByOem("123");
-        assertNotNull(product);
-        product.setName("AB");
-        product.setCostPrice(3000);
-        product.setSellingPrice(2000);
-        product.setCarType("VOLVO");
-        product.setQuantity(77);
-        product.setProducers("frontec");
-        repository.save(product);
-    }
-
-    // delete specific product
-    @Test
-    public void testDelete() {
-//        if (repository.existsById("22")) { // check the product existence
-//            repository.deleteById("22");
-//        }
-    }
-
-    //print the current number of rows "products", in database
-    @Test
-    public void testCount() {
-        System.out.println("Total recodes :" + repository.count());
-    }
-
-    //find product by name
-    @Test
-    public void testFindByName() {
-        Product product = repository.findByName("A");
-        System.out.println(product.getCostPrice());
-
-    }
-
-    //find product by its OEM
-    @Test
-    public void testFindByOem() {
-        Product product = repository.findByOem("25");
-        System.out.println(product.getCostPrice());
-
-    }
-
-    //find product by name and its OEM
-    @Test
-    public void testFindByNameAndOem() {
-        Product product = repository.findByNameAndOem("B", "23");
-        System.out.println(product.getCostPrice());
-
+        ResponseEntity<ProductDTO> result = restTemplate.getForEntity("http://localhost:8081/api/v1/products/999", ProductDTO.class);
+        /*
+        Verify request succeed
+         */
+        Assert.assertEquals(200, result.getStatusCodeValue());
+        System.out.println(result);
+        return result;
     }
 
     @Test
-    public void testFindByNameAndOemNQ() {
-        Product product = repository.findByNameAndOemNQ("B", "23");
-        System.out.println(product.getCostPrice());
+    public void testPost() throws URISyntaxException {
+        ProductDTO productDTo = new ProductDTO();
+        productDTo.setOem("999");
+        productDTo.setName("77");
+        productDTo.setCostPrice(1500);
+        productDTo.setSellingPrice(2000);
+        productDTo.setCarType("DAF");
+        productDTo.setQuantity(66);
+        productDTo.setProducers("wesam");
 
+        ResponseEntity<String> result = restTemplate.postForEntity("http://localhost:8081/api/v1/products", productDTo, String.class);
+        System.out.println(result);
+        /*
+         *   Verify request succeed
+         */
+        Assert.assertEquals(200, result.getStatusCodeValue());
     }
 
     @Test
-    public void findProductForGivenPriceNQ() {
-        List<Product> products = repository.findProductForGivenPriceNQ(33, 36);
-        products.forEach(product -> System.out.println(product.getName()));
+    public void testDelete() throws URISyntaxException {
+        final String baseUrl = "http://localhost:" + localPort + "/api/v1/products/22";
+        URI uri = new URI(baseUrl);
+        restTemplate.delete(uri);
+        testGet();
     }
 
-    @Transactional // enable level 1 caching in hibernate session level
     @Test
-    public void testCache() {
-        Session session = entityManager.unwrap(Session.class);
-        Product product;
+    public void testUpdate() throws URISyntaxException {
 
-        product = repository.findByOem("22");
-        System.out.println(product.getName());
-
-        session.evict(product); // evict is used to delete the object from cache "level 1 cache"
-
-        product = repository.findByOem("22");
-        System.out.println(product.getName());
+        ProductDTO productDTo = new ProductDTO();
+        productDTo.setOem("999");
+        productDTo.setName("77");
+        productDTo.setCostPrice(1500);
+        productDTo.setSellingPrice(2000);
+        productDTo.setCarType("DAF");
+        productDTo.setQuantity(66);
+        productDTo.setProducers("wesam");
+        final String baseUrl = "http://localhost:" + localPort + "/api/v1/products/22";
+        URI uri = new URI(baseUrl);
+        restTemplate.put(uri, productDTo);
+        testGet();
     }
 
+    @Test
+    public void testGetAll() {
+
+        ProductDTO productDTo = new ProductDTO();
+        productDTo.setOem("22");
+        productDTo.setName("AA");
+        productDTo.setCostPrice(1500);
+        productDTo.setSellingPrice(2000);
+        productDTo.setCarType("DAF");
+        productDTo.setQuantity(66);
+        productDTo.setProducers("wesam");
+        productRepository.save(productMapper.DTOToProduct(productDTo));
+
+        ProductDTO productDTo1 = new ProductDTO();
+        productDTo1.setOem("122");
+        productDTo1.setName("1A1A");
+        productDTo1.setCostPrice(21500);
+        productDTo1.setSellingPrice(20002550);
+        productDTo1.setCarType("DAFtryutr");
+        productDTo1.setQuantity(66545);
+        productDTo1.setProducers("wesayyym");
+        productRepository.save(productMapper.DTOToProduct(productDTo1));
+
+        List<ProductDTO> dtoList = restTemplate.exchange("http://localhost:8081/api/v1/products/?page=1&pageSize=10",
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<ProductDTO>>() {
+                }).getBody();
+
+        System.out.println(dtoList.get(1));
+
+    }
 
 }

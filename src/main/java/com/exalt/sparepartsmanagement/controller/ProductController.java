@@ -2,6 +2,7 @@ package com.exalt.sparepartsmanagement.controller;
 
 import com.exalt.sparepartsmanagement.dto.ProductDTO;
 import com.exalt.sparepartsmanagement.mapper.ProductMapper;
+import com.exalt.sparepartsmanagement.model.Product;
 import com.exalt.sparepartsmanagement.service.ProductService;
 import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;

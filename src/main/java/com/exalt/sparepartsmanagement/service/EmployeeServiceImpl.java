@@ -54,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = employeeRepository.findByName(name);
         if (employee != null) {
             EmployeeDTO employeeDTO = employeeMapper.EmployeeToDTO(employee);
-            employeeDTO.setRolesDTOS(roleMapper.RolesToDTOs(employee.getRoles()));
+           // employeeDTO.setRolesDTOS(roleMapper.RolesToDTOs(employee.getRoles()));
             return employeeDTO;
         } else {
             throw new NotFoundExceptions("employee Not Found");
@@ -62,7 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void save(EmployeeDTO employeeDTO) {
+    public EmployeeDTO save(EmployeeDTO employeeDTO) {
 
         String temp = employeeRepository.findByNameNQ(employeeDTO.getName());
         if (temp != null) {
@@ -89,6 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = employeeMapper.DTOToEmployee(employeeDTO);
         employee.setRoles(roles);
         employeeRepository.save(employee);
+        return employeeDTO;
     }
 
     @Override

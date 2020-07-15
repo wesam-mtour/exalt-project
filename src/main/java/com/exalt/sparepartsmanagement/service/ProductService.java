@@ -1,6 +1,8 @@
 package com.exalt.sparepartsmanagement.service;
 
 import com.exalt.sparepartsmanagement.dto.ProductDTO;
+import com.exalt.sparepartsmanagement.model.Product;
+
 import java.util.List;
 
 
