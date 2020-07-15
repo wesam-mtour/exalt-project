@@ -1,6 +1,7 @@
 package com.exalt.sparepartsmanagement.controller;
 
 
+import com.exalt.sparepartsmanagement.dto.EmployeeDTO;
 import com.exalt.sparepartsmanagement.model.Employee;
 import com.exalt.sparepartsmanagement.service.EmployeeService;
 import org.slf4j.Logger;
@@ -21,29 +22,29 @@ public class EmployeeController {
 
 
     @GetMapping(value = "/api/v1/employees",params = {"page","pageSize"})
-    public List<Employee> getEmployees(@RequestParam("page") int page,@RequestParam("pageSize") int pageSize) {
+    public List<EmployeeDTO> getEmployees(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize) {
         logger.info("Employee controller method -getEmployees");
         return employeeService.getAll(page, pageSize);
     }
 
     @GetMapping(value = "/api/v1/employees/{name}")
-    public Employee getSpecificEmployee(@PathVariable String name) {
+    public EmployeeDTO getSpecificEmployee(@PathVariable String name) {
         logger.info("Employee controller method -getSpecificEmployee");
         return employeeService.get(name);
     }
 
     @PostMapping(value = "/api/v1/employees")
-    public String createNewEmployee(@Valid @RequestBody Employee employee) {
+    public String createNewEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         logger.info("employee controller method -createNewEmployee");
-        employeeService.save(employee);
+        employeeService.save(employeeDTO);
         return "Employee added successfully";
     }
 
     @PutMapping(value = "/api/v1/employees/{name}")
-    public String updateEmployee(@PathVariable String name, @RequestBody Employee employee) {
+    public String updateEmployee(@PathVariable String name, @RequestBody EmployeeDTO employeeDTO) {
         logger.info("Employee controller method -updateEmployee");
-        employeeService.update(name, employee);
-        return "Employee updated successfully ";
+        employeeService.update(name, employeeDTO);
+        return "Employee updated successfully";
     }
 
     @DeleteMapping(value = "/api/v1/employees/{name}")

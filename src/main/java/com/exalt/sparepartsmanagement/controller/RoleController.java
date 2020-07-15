@@ -12,7 +12,9 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-public class RoleController {
+public class
+
+RoleController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired

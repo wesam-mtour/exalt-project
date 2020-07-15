@@ -1,11 +1,6 @@
 package com.exalt.sparepartsmanagement.dto;
 
-import com.exalt.sparepartsmanagement.model.Employee;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 public class RoleDTO {
 
@@ -15,9 +10,6 @@ public class RoleDTO {
     public RoleDTO() {
     }
 
-    //dfsdfsdfdsfsdfdfdfjjjjjjjjjjjjjjj
-    //dsfsdfsdfsdf
-    //weam
 
     public RoleDTO(@NotNull String name) {
         this.name = name;

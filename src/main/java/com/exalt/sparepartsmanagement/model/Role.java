@@ -1,5 +1,6 @@
 package com.exalt.sparepartsmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.NoArgsConstructor;
 
@@ -21,11 +22,14 @@ public class Role {
      */
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     /*
-    @JsonIgnoreProperties is used to tell Jackson to ignore the field "roles" of a Java object.
+    @JsonIgnore is used to tell Jackson to ignore the field "employees" of a Java object.
     The property is ignored both when reading JSON into Java objects, and when writing Java objects into JSON
      */
-    @JsonIgnoreProperties("roles")
+    @JsonIgnore
     private List<Employee> employees;
+
+    public Role() {
+    }
 
     public Role(@NotNull String name) {
         this.name = name;

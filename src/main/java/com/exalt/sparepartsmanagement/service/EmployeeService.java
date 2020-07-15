@@ -1,6 +1,7 @@
 package com.exalt.sparepartsmanagement.service;
 
 
+import com.exalt.sparepartsmanagement.dto.EmployeeDTO;
 import com.exalt.sparepartsmanagement.model.Employee;
 
 import java.util.List;
@@ -8,13 +9,13 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    List<Employee> getAll(int page , int pageSize);
+    List<EmployeeDTO> getAll(int page , int pageSize);
 
-    Employee get(String name);
+    EmployeeDTO get(String name);
 
-    void save(Employee employee);
+    void save(EmployeeDTO employeeDTO);
 
-    void update(String name, Employee employee);
+    void update(String name, EmployeeDTO employeeDTO);
 
     void delete(String name);
 }
