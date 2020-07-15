@@ -3,4 +3,5 @@ The management of spare parts is one of the most important businesses, especiall
 ## Requirements
 * Spring Boot 2.3.1.RELEASE requires Java 8 
 * Maven 3.6.0 or later
+* MySql server 8.0 or later  https://corlewsolutions.com/articles/article-21-how-to-install-mysql-server-5-6-on-windows-7-development-machine
 
