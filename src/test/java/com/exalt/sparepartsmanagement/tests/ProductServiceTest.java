@@ -154,7 +154,7 @@ public class ProductServiceTest {
         productDTo.setCarType("DAF");
         productDTo.setQuantity(66);
         productDTo.setProducers("wesam");
-        productRepository.save(productMapper.DTOToProduct(productDTo));
+        ResponseEntity<ProductDTO> result = restTemplate.postForEntity("http://localhost:8081/api/v1/products", productDTo, ProductDTO.class);
 
         ProductDTO productDTo1 = new ProductDTO();
         productDTo1.setOem("122");
@@ -164,7 +164,7 @@ public class ProductServiceTest {
         productDTo1.setCarType("DAFtryutr");
         productDTo1.setQuantity(66545);
         productDTo1.setProducers("wesayyym");
-        productRepository.save(productMapper.DTOToProduct(productDTo1));
+         result = restTemplate.postForEntity("http://localhost:8081/api/v1/products", productDTo1, ProductDTO.class);
 
         List<ProductDTO> dtoList = restTemplate.exchange("http://localhost:8081/api/v1/products/?page=1&pageSize=10",
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<ProductDTO>>() {

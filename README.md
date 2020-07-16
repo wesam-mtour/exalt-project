@@ -7,18 +7,21 @@ The management of spare parts is one of the most important businesses, especiall
 ## Installing
 
 * open cmd 
----
+
 #### Create directory (e.g., In your Desktop)   
-
-* mkdir project
----
----
+```DOS batch
+mkdir project
+```
 #### change the current directory (i.e., the directory in which the created directory  is currently working) 
+```DOS batch
+cd c:/.../project
+```
+#### Running Unit Tests
+```DOS batch
+mvn clean install
+```
+#### Running as Spring Boot application
+```DOS batch
+mvn spring-boot:run
+```
 
-* cd c:/.../project
----
-#### Running the tests
-
-* cd c:/.../project
----
- *  mvn clean install
