@@ -17,6 +17,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -28,29 +29,31 @@ import java.util.List;
 
 
 @ActiveProfiles("dev")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+//@RequestMapping(value = "")
 public class ProductServiceTest {
     @Autowired
     private ProductRepository productRepository;
 
     @LocalServerPort
-    int localPort = 8081;
+    int localPort ;
 
     private Logger logger = LoggerFactory.getLogger(ProductServiceTest.class);
 
     private ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
 
-    TestRestTemplate restTemplate = new TestRestTemplate();
+    private TestRestTemplate restTemplate = new TestRestTemplate();
 
 
     @Test
     @Order(1)
-    public void testGet() throws URISyntaxException {
+    public void testGet()  {
         ProductDTO productDTO = createRandomProduct();
         postProduct(productDTO);
 
-        ResponseEntity<ProductDTO> result = restTemplate.getForEntity("http://localhost:8081/api/v1/products/" + productDTO.getOem(), ProductDTO.class);
+        ResponseEntity<ProductDTO> result = restTemplate.getForEntity("http://localhost:"+localPort+"/api/v1/products/" + productDTO.getOem(),
+                ProductDTO.class);
         /*
         Verify request succeed
          */
@@ -79,16 +82,15 @@ public class ProductServiceTest {
         /*
          *   Verify request succeed
          */
-        ResponseEntity<ProductDTO> result = restTemplate.getForEntity("http://localhost:8081/api/v1/products/" + productDTO.getOem(), ProductDTO.class);
-        Assert.assertEquals(404, result.getStatusCodeValue());
-
+        ResponseEntity<ProductDTO> result = restTemplate.getForEntity("http://localhost:"+localPort+"/api/v1/products/" + productDTO.getOem(), ProductDTO.class);
+        Assert.assertEquals(HttpStatus.NOT_FOUND.value(), result.getStatusCodeValue());
     }
 
     @Test
     @Order(3)
     public void testPost() throws URISyntaxException {
         ProductDTO productDTO = createRandomProduct();
-        ResponseEntity<ProductDTO> result = restTemplate.postForEntity("http://localhost:8081/api/v1/products", productDTO, ProductDTO.class);
+        ResponseEntity<ProductDTO> result = restTemplate.postForEntity("http://localhost:"+localPort+"/api/v1/products/", productDTO, ProductDTO.class);
         /*
          *   Verify request succeed
          */
@@ -111,7 +113,7 @@ public class ProductServiceTest {
         ProductDTO productDTO = createRandomProduct();
         postProduct(productDTO);
 
-        final String baseUrl = "http://localhost:" + localPort + "/api/v1/products/" + productDTO.getOem();
+        final String baseUrl = "http://localhost:"+localPort+"/api/v1/products/"+ productDTO.getOem();
         URI uri = new URI(baseUrl);
         /*
         updating product...
@@ -128,7 +130,7 @@ public class ProductServiceTest {
         /*
          *   Verify request succeed
          */
-        ResponseEntity<ProductDTO> result = restTemplate.getForEntity("http://localhost:8081/api/v1/products/" + productDTO.getOem(), ProductDTO.class);
+        ResponseEntity<ProductDTO> result = restTemplate.getForEntity("http://localhost:"+localPort+"/api/v1/products/" + productDTO.getOem(), ProductDTO.class);
         Assert.assertEquals(200, result.getStatusCodeValue());
         assertAll(
                 () -> assertEquals(result.getBody().getOem(), productDTO.getOem()),
@@ -154,7 +156,7 @@ public class ProductServiceTest {
         productDTo.setCarType("DAF");
         productDTo.setQuantity(66);
         productDTo.setProducers("wesam");
-        ResponseEntity<ProductDTO> result = restTemplate.postForEntity("http://localhost:8081/api/v1/products", productDTo, ProductDTO.class);
+        ResponseEntity<ProductDTO> result = restTemplate.postForEntity("http://localhost:"+localPort+"/api/v1/products/", productDTo, ProductDTO.class);
 
         ProductDTO productDTo1 = new ProductDTO();
         productDTo1.setOem("122");
@@ -164,14 +166,13 @@ public class ProductServiceTest {
         productDTo1.setCarType("DAFtryutr");
         productDTo1.setQuantity(66545);
         productDTo1.setProducers("wesayyym");
-         result = restTemplate.postForEntity("http://localhost:8081/api/v1/products", productDTo1, ProductDTO.class);
+         result = restTemplate.postForEntity("http://localhost:"+localPort+"/api/v1/products/", productDTo1, ProductDTO.class);
 
-        List<ProductDTO> dtoList = restTemplate.exchange("http://localhost:8081/api/v1/products/?page=1&pageSize=10",
+        List<ProductDTO> dtoList = restTemplate.exchange("http://localhost:"+localPort+"/api/v1/products/"+"?page=1&pageSize=10",
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<ProductDTO>>() {
                 }).getBody();
 
-        System.out.println(dtoList.get(1));
-
+        logger.info(dtoList.get(1).toString());
     }
 
     public ProductDTO createRandomProduct() {
@@ -187,8 +188,6 @@ public class ProductServiceTest {
     }
 
     public void postProduct(ProductDTO productDTO) {
-        ResponseEntity<String> result = restTemplate.postForEntity("http://localhost:8081/api/v1/products", productDTO, String.class);
+        ResponseEntity<String> result = restTemplate.postForEntity("http://localhost:"+localPort+"/api/v1/products/", productDTO, String.class);
     }
-
-
 }
