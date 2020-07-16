@@ -11,7 +11,7 @@ public interface ProductService {
 
     ProductDTO get(String omeOrProductName);
 
-    void save(ProductDTO productDTO);
+    Product save(ProductDTO productDTO);
 
     void delete(String omeOrProductName);
 

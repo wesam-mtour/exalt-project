@@ -41,10 +41,9 @@ public class ProductController {
     }
 
     @PostMapping(value = "/api/v1/products")
-    public String createNewProduct(@Valid @RequestBody ProductDTO productDTO) {
+    public Product createNewProduct(@Valid @RequestBody ProductDTO productDTO) {
         logger.info("product controller method -createNewProduct");
-        productService.save(productDTO);
-        return "product saved successfully ";
+       return productService.save(productDTO);
     }
 
     @PutMapping(value = "/api/v1/products/{oemOrProductName}")

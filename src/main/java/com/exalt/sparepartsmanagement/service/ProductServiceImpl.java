@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
             return productMapper.productToProductDTO(product);
     }
 
-    public void save(ProductDTO productDTO) {
+    public Product save(ProductDTO productDTO) {
         String temp = productRepository.findByNameNQ(productDTO.getName());
         if (temp != null) {
             throw new ConflictExceptions(String.format("There is product with the same name ( %s ) ", temp));
@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
         if (temp != null) {
             throw new ConflictExceptions(String.format("This OEM related to product ( %s )", temp));
         }
-        productRepository.save(productMapper.DTOToProduct(productDTO));
+       return productRepository.save(productMapper.DTOToProduct(productDTO));
     }
 
     public void delete(String omeOrProductName) {

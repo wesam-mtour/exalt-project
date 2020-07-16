@@ -4,116 +4,146 @@ import com.exalt.sparepartsmanagement.dto.ProductDTO;
 import com.exalt.sparepartsmanagement.mapper.ProductMapper;
 import com.exalt.sparepartsmanagement.repository.ProductRepository;
 import org.junit.Assert;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mapstruct.factory.Mappers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 
-import javax.persistence.EntityManager;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
 
+@ActiveProfiles("dev")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class ProductServiceTest {
-
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    EntityManager entityManager;
-
-    private ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
-
 
     @LocalServerPort
     int localPort = 8081;
 
-    HttpHeaders headers = new HttpHeaders();
+    private Logger logger = LoggerFactory.getLogger(ProductServiceTest.class);
+
+    private ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
+
     TestRestTemplate restTemplate = new TestRestTemplate();
 
 
-//    @BeforeEach
-//    public void create() {
-//        ProductDTO productDTo = new ProductDTO();
-//        productDTo.setOem("22");
-//        productDTo.setName("AA");
-//        productDTo.setCostPrice(1500);
-//        productDTo.setSellingPrice(2000);
-//        productDTo.setCarType("DAF");
-//        productDTo.setQuantity(66);
-//        productDTo.setProducers("wesam");
-//        productRepository.save(productMapper.DTOToProduct(productDTo));
-// }
-
-
     @Test
-    public ResponseEntity<ProductDTO> testGet() throws URISyntaxException {
+    @Order(1)
+    public void testGet() throws URISyntaxException {
+        ProductDTO productDTO = createRandomProduct();
+        postProduct(productDTO);
 
-        ResponseEntity<ProductDTO> result = restTemplate.getForEntity("http://localhost:8081/api/v1/products/999", ProductDTO.class);
+        ResponseEntity<ProductDTO> result = restTemplate.getForEntity("http://localhost:8081/api/v1/products/" + productDTO.getOem(), ProductDTO.class);
         /*
         Verify request succeed
          */
         Assert.assertEquals(200, result.getStatusCodeValue());
-        System.out.println(result);
-        return result;
+        assertAll(
+                () -> assertEquals(result.getBody().getOem(), productDTO.getOem()),
+                () -> assertEquals(result.getBody().getName(), productDTO.getName()),
+                () -> assertEquals(result.getBody().getCarType(), productDTO.getCarType()),
+                () -> assertEquals(result.getBody().getProducers(), productDTO.getProducers()),
+                () -> assertEquals(result.getBody().getCostPrice(), productDTO.getCostPrice()),
+                () -> assertEquals(result.getBody().getSellingPrice(), productDTO.getSellingPrice()),
+                () -> assertEquals(result.getBody().getQuantity(), productDTO.getQuantity())
+        );
+        logger.info(result.getBody().toString());
     }
 
     @Test
-    public void testPost() throws URISyntaxException {
-        ProductDTO productDTo = new ProductDTO();
-        productDTo.setOem("999");
-        productDTo.setName("77");
-        productDTo.setCostPrice(1500);
-        productDTo.setSellingPrice(2000);
-        productDTo.setCarType("DAF");
-        productDTo.setQuantity(66);
-        productDTo.setProducers("wesam");
+    @Order(2)
+    public void testDelete() throws URISyntaxException {
+        ProductDTO productDTO = createRandomProduct();
+        postProduct(productDTO);
 
-        ResponseEntity<String> result = restTemplate.postForEntity("http://localhost:8081/api/v1/products", productDTo, String.class);
-        System.out.println(result);
+        final String baseUrl = "http://localhost:" + localPort + "/api/v1/products/" + productDTO.getOem();
+        URI uri = new URI(baseUrl);
+        restTemplate.delete(uri);
+        /*
+         *   Verify request succeed
+         */
+        ResponseEntity<ProductDTO> result = restTemplate.getForEntity("http://localhost:8081/api/v1/products/" + productDTO.getOem(), ProductDTO.class);
+        Assert.assertEquals(404, result.getStatusCodeValue());
+
+    }
+
+    @Test
+    @Order(3)
+    public void testPost() throws URISyntaxException {
+        ProductDTO productDTO = createRandomProduct();
+        ResponseEntity<ProductDTO> result = restTemplate.postForEntity("http://localhost:8081/api/v1/products", productDTO, ProductDTO.class);
         /*
          *   Verify request succeed
          */
         Assert.assertEquals(200, result.getStatusCodeValue());
+        assertAll(
+                () -> assertEquals(result.getBody().getOem(), productDTO.getOem()),
+                () -> assertEquals(result.getBody().getName(), productDTO.getName()),
+                () -> assertEquals(result.getBody().getCarType(), productDTO.getCarType()),
+                () -> assertEquals(result.getBody().getProducers(), productDTO.getProducers()),
+                () -> assertEquals(result.getBody().getCostPrice(), productDTO.getCostPrice()),
+                () -> assertEquals(result.getBody().getSellingPrice(), productDTO.getSellingPrice()),
+                () -> assertEquals(result.getBody().getQuantity(), productDTO.getQuantity())
+        );
+        logger.info(result.getBody().toString());
     }
 
     @Test
-    public void testDelete() throws URISyntaxException {
-        final String baseUrl = "http://localhost:" + localPort + "/api/v1/products/22";
-        URI uri = new URI(baseUrl);
-        restTemplate.delete(uri);
-        testGet();
-    }
-
-    @Test
+    @Order(4)
     public void testUpdate() throws URISyntaxException {
+        ProductDTO productDTO = createRandomProduct();
+        postProduct(productDTO);
 
-        ProductDTO productDTo = new ProductDTO();
-        productDTo.setOem("999");
-        productDTo.setName("77");
-        productDTo.setCostPrice(1500);
-        productDTo.setSellingPrice(2000);
-        productDTo.setCarType("DAF");
-        productDTo.setQuantity(66);
-        productDTo.setProducers("wesam");
-        final String baseUrl = "http://localhost:" + localPort + "/api/v1/products/22";
+        final String baseUrl = "http://localhost:" + localPort + "/api/v1/products/" + productDTO.getOem();
         URI uri = new URI(baseUrl);
-        restTemplate.put(uri, productDTo);
-        testGet();
+        /*
+        updating product...
+         */
+        productDTO.setOem("999");
+        productDTO.setName("77");
+        productDTO.setCostPrice(5000);
+        productDTO.setSellingPrice(4000);
+        productDTO.setCarType("VOLVO");
+        productDTO.setQuantity(100);
+        productDTO.setProducers("mohammad");
+
+        restTemplate.put(uri, productDTO);
+        /*
+         *   Verify request succeed
+         */
+        ResponseEntity<ProductDTO> result = restTemplate.getForEntity("http://localhost:8081/api/v1/products/" + productDTO.getOem(), ProductDTO.class);
+        Assert.assertEquals(200, result.getStatusCodeValue());
+        assertAll(
+                () -> assertEquals(result.getBody().getOem(), productDTO.getOem()),
+                () -> assertEquals(result.getBody().getName(), productDTO.getName()),
+                () -> assertEquals(result.getBody().getCarType(), productDTO.getCarType()),
+                () -> assertEquals(result.getBody().getProducers(), productDTO.getProducers()),
+                () -> assertEquals(result.getBody().getCostPrice(), productDTO.getCostPrice()),
+                () -> assertEquals(result.getBody().getSellingPrice(), productDTO.getSellingPrice()),
+                () -> assertEquals(result.getBody().getQuantity(), productDTO.getQuantity())
+        );
+        logger.info(result.getBody().toString());
     }
-    /*
-    159159
-     */
 
     @Test
+    @Order(5)
     public void testGetAll() {
 
         ProductDTO productDTo = new ProductDTO();
@@ -125,7 +155,7 @@ public class ProductServiceTest {
         productDTo.setQuantity(66);
         productDTo.setProducers("wesam");
         productRepository.save(productMapper.DTOToProduct(productDTo));
-//dsfdsdfgf
+
         ProductDTO productDTo1 = new ProductDTO();
         productDTo1.setOem("122");
         productDTo1.setName("1A1A");
@@ -143,5 +173,22 @@ public class ProductServiceTest {
         System.out.println(dtoList.get(1));
 
     }
+
+    public ProductDTO createRandomProduct() {
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setOem("22");
+        productDTO.setName("AA");
+        productDTO.setCostPrice(1500);
+        productDTO.setSellingPrice(2000);
+        productDTO.setCarType("DAF");
+        productDTO.setQuantity(66);
+        productDTO.setProducers("wesam");
+        return productDTO;
+    }
+
+    public void postProduct(ProductDTO productDTO) {
+        ResponseEntity<String> result = restTemplate.postForEntity("http://localhost:8081/api/v1/products", productDTO, String.class);
+    }
+
 
 }

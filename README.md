@@ -1,90 +1,24 @@
-Pet Clinic Project
----
-
-### Table of Contents
-
-- [Description](#description)
-- [Requirements](#requirements)
-- [How To Use](#how-to-use)
-- [License](#license)
-- [Author Info](#author-info)
-
----
-
-## Description
-
-This is a Pet-Clinic web project used to organize a pet-clinic with all its component as clinets and their pets
-employees (Owner,Admin,Worker).
-
-The project provide you with the CRUD opperation (Cread, Read, Update and Delete)
+# Auto spare parts management system
+The management of spare parts is one of the most important businesses, especially for industrial enterprises. However, the problems of spare parts management trouble a lot in terms of multiple types of models and parts. Therefore, they must be managed in terms of quantity, divisions, purchases, and sales by management system.
 ## Requirements
+* Java Development Kit (JDK) 1.8 : [download from here](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
+* Maven 3.6.3 : [download from here](https://mkyong.com/maven/how-to-install-maven-in-windows/)
+* MySql server 8.0 : [download from here](https://corlewsolutions.com/articles/article-21-how-to-install-mysql-server-5-6-on-windows-7-development-machine)  
+## Installing
 
-- Windows 10
-- Java JDK1.8.0_241 [install JDK 8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
-- Apache Maven 3.6.3 [install Maven](https://maven.apache.org/download.cgi) |[How to Install](https://howtodoinjava.com/maven/how-to-install-maven-on-windows/)
-- MYSQL server 8.0.20 [install MYSQL server](https://dev.mysql.com/downloads/windows/installer/8.0.html)
-
-
-
+* open cmd 
 ---
+#### Create directory (e.g., In your Desktop)   
 
-## How To Use
-- Open CMD  
-- change dirictory to project file (cd ....)  
-* To run the Test
-- run the command (mvn clean install)
-* run without test  
-
-
-
-
-
-
-#### API Reference
-
-```html
-    <p>dummy code</p>
-```
-[Back To The Top](#read-me-template)
-
+* mkdir project
 ---
-
-## References
-[Back To The Top](#read-me-template)
-
 ---
+#### change the current directory (i.e., the directory in which the created directory  is currently working) 
 
-## License
-
-MIT License
-
-Copyright (c) [2017] [James Q Quick]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-[Back To The Top](#read-me-template)
-
+* cd c:/.../project
 ---
+#### Running the tests
 
-## Author Info
-
-- Twitter - [@jamesqquick](https://twitter.com/jamesqquick)
-- Website - [James Q Quick](https://jamesqquick.com)
-
-[Back To The Top](#read-me-template)
+* cd c:/.../project
+---
+ *  mvn clean install
