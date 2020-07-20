@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
 
+    @Transactional(readOnly = true)
     public List<ProductDTO> getAll(int page, int pageSize) {
         if (page < 1) {
             throw new NotFoundExceptions("Invalid page number");
@@ -34,11 +36,12 @@ public class ProductServiceImpl implements ProductService {
             throw new NotFoundExceptions("Invalid page size number");
         }
 
-        Pageable paging = PageRequest.of((page - 1)*pageSize, pageSize);
+        Pageable paging = PageRequest.of((page - 1) * pageSize, pageSize);
         Page<Product> pagedResult = productRepository.findAll(paging);
         return productMapper.productsToDTOs(pagedResult.toList());
     }
 
+    @Transactional(readOnly = true)
     public ProductDTO get(String omeOrProductName) {
         Product product = productRepository.findByNameOrOemNQ(omeOrProductName);
         if (product == null) {
@@ -47,6 +50,7 @@ public class ProductServiceImpl implements ProductService {
             return productMapper.productToProductDTO(product);
     }
 
+    @Transactional
     public Product save(ProductDTO productDTO) {
         String temp = productRepository.findByNameNQ(productDTO.getName());
         if (temp != null) {
@@ -56,9 +60,10 @@ public class ProductServiceImpl implements ProductService {
         if (temp != null) {
             throw new ConflictExceptions(String.format("This OEM related to product ( %s )", temp));
         }
-       return productRepository.save(productMapper.DTOToProduct(productDTO));
+        return productRepository.save(productMapper.DTOToProduct(productDTO));
     }
 
+    @Transactional
     public void delete(String omeOrProductName) {
         Product product = productRepository.findByNameOrOemNQ(omeOrProductName);
 
@@ -68,6 +73,7 @@ public class ProductServiceImpl implements ProductService {
             throw new NotFoundExceptions("Not found product to deleting ");
     }
 
+    @Transactional
     public void update(String omeOrProductName, ProductDTO productDTO) {
         /*
         check if the product not present at all

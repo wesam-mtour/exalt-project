@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,20 +25,22 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerMapper customerMapper = Mappers.getMapper(CustomerMapper.class);
 
 
-    public List<CustomerDTO> getAll(int page , int pageSize) {
+    @Transactional(readOnly = true)
+    public List<CustomerDTO> getAll(int page, int pageSize) {
 
-        if (page < 1){
-            throw  new NotFoundExceptions("Invalid page number");
+        if (page < 1) {
+            throw new NotFoundExceptions("Invalid page number");
         }
-        if (pageSize < 1){
-            throw  new NotFoundExceptions("Invalid page size number");
+        if (pageSize < 1) {
+            throw new NotFoundExceptions("Invalid page size number");
         }
-        Pageable paging = PageRequest.of(page-1, pageSize);
+        Pageable paging = PageRequest.of(page - 1, pageSize);
         Page<Customer> pagedResult = customerRepository.findAll(paging);
         return customerMapper.customersToDTOs(pagedResult.toList());
 
     }
 
+    @Transactional(readOnly = true)
     public CustomerDTO get(String name) {
         Customer customer = customerRepository.findByName(name);
         if (customer != null) {
@@ -46,6 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new NotFoundExceptions("customer not Found");
     }
 
+    @Transactional
     public void save(CustomerDTO customerDTO) {
 
         String temp = customerRepository.findByNameNQ(customerDTO.getName());
@@ -61,6 +65,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
+    @Transactional
     public void delete(String name) {
         Customer customer = customerRepository.findByName(name);
         if (customer != null) {
@@ -70,6 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
+    @Transactional
     public void update(String name, CustomerDTO customerDTO) {
         Customer updatingCustomer = customerRepository.findByName(name);
         /*

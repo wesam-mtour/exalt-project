@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class BillServiceImpl implements BillService {
     private ProductRepository productRepository;
 
     @Override
+
+    @Transactional(readOnly = true)
     public List<Bill> getAll(int page, int pageSize) {
         if (page < 1) {
             throw new NotFoundExceptions("Invalid page number");
@@ -40,6 +43,7 @@ public class BillServiceImpl implements BillService {
         return pagedResult.toList();
     }
 
+    @Transactional(readOnly = true)
     public List<Bill> getBills(String customerName) {
         Customer customer = customerRepository.findByName(customerName);
         if (customer != null) {
@@ -52,6 +56,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Bill> getBillsByDate(String customerName, String date) {
         Customer customer = customerRepository.findByName(customerName);
         if (customer != null) {
@@ -63,6 +68,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Bill> getBillsInMonth(String customerName, int month, int year) {
         Customer customer = customerRepository.findByName(customerName);
         if (customer != null) {
@@ -74,6 +80,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
+    @Transactional
     public void save(List<PostBillDTO> postBillDTOS, String customerName) {
         Customer customer = customerRepository.findByName(customerName);
         if (customer != null) {
@@ -108,6 +115,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
+    @Transactional
     public void delete(String customerName) {
 
     }

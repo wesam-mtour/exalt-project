@@ -4,6 +4,7 @@ import com.exalt.sparepartsmanagement.error.FileNotFoundExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -14,6 +15,7 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
+    @Transactional
     public String update(String data, String fileName) {
         String filePath = Paths.get("").toAbsolutePath().toString() + "\\" + fileName;
         logger.info(filePath);
@@ -33,6 +35,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String get(String fileName) {
         String filePath = Paths.get("").toAbsolutePath().toString() + "\\" + fileName;
         logger.info(filePath);

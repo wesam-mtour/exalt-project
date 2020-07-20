@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private RoleMapper roleMapper = Mappers.getMapper(RoleMapper.class);
 
     @Override
+    @Transactional(readOnly = true)
     public List<EmployeeDTO> getAll(int page, int pageSize) {
         if (page < 1) {
             throw new NotFoundExceptions("Invalid page number");
@@ -50,6 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public EmployeeDTO get(String name) {
         Employee employee = employeeRepository.findByName(name);
         if (employee != null) {
@@ -62,6 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public EmployeeDTO save(EmployeeDTO employeeDTO) {
 
         String temp = employeeRepository.findByNameNQ(employeeDTO.getName());
@@ -93,6 +97,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public void update(String name, EmployeeDTO employeeDTO) {
         Employee updatingEmployee = employeeRepository.findByName(name);
         /*
@@ -140,6 +145,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public void delete(String name) {
         Employee employee = employeeRepository.findByName(name);
 

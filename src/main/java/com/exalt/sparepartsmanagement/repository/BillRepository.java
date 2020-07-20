@@ -8,8 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface BillRepository extends JpaRepository<Bill, Integer> {
-    @Query(value = "SELECT * FROM bill b WHERE b.customer_id IN (SELECT id FROM customer c WHERE" +
-            " c.name=:customerName)", nativeQuery = true)
+    @Query(value = "SELECT b.* FROM bill b JOIN customer c WHERE c.id=b.customer_id AND c.name=:customerName", nativeQuery = true)
     List<Bill> getBillsByName(@Param("customerName") String customerName);
 
     @Query(value = "SELECT * FROM bill b WHERE b.received_date=:date and b.customer_id  IN (SELECT id FROM customer c " +

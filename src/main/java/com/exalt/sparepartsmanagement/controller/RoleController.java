@@ -13,13 +13,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-public class
-    /*
-    erfererger
-    202010+20
-     */
+public class RoleController {
 
-RoleController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired

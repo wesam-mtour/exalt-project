@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<RoleDTO> getAll(int page , int pageSize)
     { if (page < 1){
         throw  new NotFoundExceptions("Invalid page number");
@@ -41,6 +43,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public RoleDTO get(String name) {
         Role role = roleRepository.findByName(name);
         if (role == null) {
@@ -51,6 +54,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public void save(RoleDTO roleDTO) {
         String temp = roleRepository.findByNameNQ(roleDTO.getName());
         if (temp != null) {
@@ -60,6 +64,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public void update(String name, RoleDTO roleDTO) {
         Role updatingRole = roleRepository.findByName(name);
 
@@ -77,6 +82,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public void delete(String name) {
         Role role = roleRepository.findByName(name);
 
