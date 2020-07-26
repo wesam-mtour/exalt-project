@@ -40,7 +40,6 @@ public class ProductServiceTest {
 
     private TestRestTemplate restTemplate = new TestRestTemplate();
 
-
     @Test
     @Order(1)
     public void testGet() {

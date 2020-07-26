@@ -18,7 +18,6 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-
     /*
     enable pagination in getAll method
      */

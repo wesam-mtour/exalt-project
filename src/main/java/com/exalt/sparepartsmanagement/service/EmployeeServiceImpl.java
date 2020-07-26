@@ -3,12 +3,13 @@ package com.exalt.sparepartsmanagement.service;
 
 import com.exalt.sparepartsmanagement.dto.EmployeeDTO;
 import com.exalt.sparepartsmanagement.dto.RoleDTO;
+import com.exalt.sparepartsmanagement.error.exceptions.BadRequestExceptions;
 import com.exalt.sparepartsmanagement.mapper.EmployeeMapper;
 import com.exalt.sparepartsmanagement.mapper.RoleMapper;
 import com.exalt.sparepartsmanagement.model.Role;
 import com.exalt.sparepartsmanagement.repository.EmployeeRepository;
-import com.exalt.sparepartsmanagement.error.ConflictExceptions;
-import com.exalt.sparepartsmanagement.error.NotFoundExceptions;
+import com.exalt.sparepartsmanagement.error.exceptions.ConflictExceptions;
+import com.exalt.sparepartsmanagement.error.exceptions.NotFoundExceptions;
 import com.exalt.sparepartsmanagement.model.Employee;
 import com.exalt.sparepartsmanagement.repository.RoleRepository;
 import org.mapstruct.factory.Mappers;
@@ -21,8 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -41,10 +40,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional(readOnly = true)
     public List<EmployeeDTO> getAll(int page, int pageSize) {
         if (page < 1) {
-            throw new NotFoundExceptions("Invalid page number");
+            throw new BadRequestExceptions("Invalid page number");
         }
         if (pageSize < 1) {
-            throw new NotFoundExceptions("Invalid page size");
+            throw new BadRequestExceptions("Invalid page size");
         }
         Pageable paging = PageRequest.of(page - 1, pageSize);
         Page<Employee> pagedResult = employeeRepository.findAll(paging);

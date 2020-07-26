@@ -21,7 +21,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
 
-    @GetMapping(value = "/api/v1/employees",params = {"page","pageSize"})
+    @GetMapping(value = "/api/v1/employees/",params = {"page","pageSize"})
     public List<EmployeeDTO> getEmployees(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize) {
         logger.info("Employee controller method -getEmployees");
         return employeeService.getAll(page, pageSize);

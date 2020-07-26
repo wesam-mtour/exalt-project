@@ -1,6 +1,6 @@
 package com.exalt.sparepartsmanagement.service;
 
-import com.exalt.sparepartsmanagement.error.FileNotFoundExceptions;
+import com.exalt.sparepartsmanagement.error.exceptions.FileNotFoundExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,7 @@ package com.exalt.sparepartsmanagement.service;
 
 
 import com.exalt.sparepartsmanagement.dto.PostBillDTO;
-import com.exalt.sparepartsmanagement.error.NotFoundExceptions;
+import com.exalt.sparepartsmanagement.error.exceptions.NotFoundExceptions;
 import com.exalt.sparepartsmanagement.model.Bill;
 import com.exalt.sparepartsmanagement.model.Customer;
 import com.exalt.sparepartsmanagement.model.Product;
