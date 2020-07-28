@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 /*
@@ -58,5 +59,9 @@ public class ProductController {
         logger.info("product controller method -deleteProduct");
         productService.delete(oemOrProductName);
         return " product deleted successfully";
+    }
+    @GetMapping(value = "/user")
+    public Principal getUser(Principal user){
+            return user;
     }
 }

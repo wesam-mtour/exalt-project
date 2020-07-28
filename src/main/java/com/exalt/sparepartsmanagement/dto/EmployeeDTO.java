@@ -20,6 +20,9 @@ public class EmployeeDTO {
     private double salary;
 
     @NotNull
+    private String password;
+
+    @NotNull
     @PhoneValidator
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -64,5 +67,13 @@ public class EmployeeDTO {
 
     public void setRolesDTOS(List<RoleDTO> rolesDTOS) {
         this.rolesDTOS = rolesDTOS;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

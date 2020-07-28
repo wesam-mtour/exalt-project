@@ -23,10 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
         Employee user = employeeRepository.findUserByNameNQ(username);
-
         List<String> roles = (employeeRepository.findRolesByNameNQ(user.getName()));
-        System.out.println("00000000000000000000000000000000000000");
-        System.out.println(roles.get(0));
         setRoles(roles);
         if (user == null) {
             throw new UsernameNotFoundException("Could not find user");

@@ -32,6 +32,9 @@ public class Employee {
     private double salary;
 
     @NotNull
+    private String password;
+
+    @NotNull
     @PhoneValidator
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -96,6 +99,13 @@ public class Employee {
 
     public void setSalary(double salary) {
         this.salary = salary;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

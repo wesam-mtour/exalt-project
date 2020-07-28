@@ -126,6 +126,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             updatingEmployee.setEmail(employeeDTO.getEmail());
             updatingEmployee.setPhoneNumber(employeeDTO.getPhoneNumber());
             updatingEmployee.setSalary(employeeDTO.getSalary());
+            updatingEmployee.setPassword(employeeDTO.getPassword());
             Role role = new Role();
             List<Role> roles = new ArrayList<Role>();
             for (RoleDTO roleDTO : employeeDTO.getRolesDTOS()) {
