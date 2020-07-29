@@ -81,6 +81,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         Role role = new Role();
         List<Role> roles = new ArrayList<Role>();
+        if (employeeDTO.getRolesDTOS()==null){
+            Employee employee = employeeMapper.DTOToEmployee(employeeDTO);
+            employee.setRoles(roles);
+            employeeRepository.save(employee);
+            return employeeDTO;
+        }
         for (RoleDTO roleDTO : employeeDTO.getRolesDTOS()) {
             role = roleRepository.findByName(roleDTO.getName());
             if (role != null) {

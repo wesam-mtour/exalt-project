@@ -60,8 +60,5 @@ public class ProductController {
         productService.delete(oemOrProductName);
         return " product deleted successfully";
     }
-    @GetMapping(value = "/user")
-    public Principal getUser(Principal user){
-            return user;
-    }
+
 }
