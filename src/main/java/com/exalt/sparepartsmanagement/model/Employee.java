@@ -13,11 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class Employee {
-    @Id
     /*
     GenerationType.IDENTITY This special type column is populated internally by
      the table itself without using a separate "sequence table"    .
      */
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -104,6 +104,7 @@ public class Employee {
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }

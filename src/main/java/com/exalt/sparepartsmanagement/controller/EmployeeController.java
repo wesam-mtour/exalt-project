@@ -70,5 +70,10 @@ public class EmployeeController {
         employeeService.save(employeeDTO);
         return user;
     }
+    @GetMapping(value = "/private")
+    public String getUser() {
+
+        return "private api";
+    }
 
 }
