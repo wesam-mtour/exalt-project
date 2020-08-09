@@ -1,19 +1,21 @@
 package com.exalt.sparepartsmanagement.security.configurations;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.security.authentication.AuthenticationManager;
 
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 
 /*
  *The @EnableWebSecurity annotation is important if we disable the default security configuration.
@@ -30,7 +32,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 public class SecurityConfiguration extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private AuthenticationManager authenticationManager;
-
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     /*
     defines the security constraints on the token endpoint
@@ -50,13 +53,10 @@ public class SecurityConfiguration extends AuthorizationServerConfigurerAdapter 
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients
-                .inMemory()
-                .withClient("qq")
-                .secret("1")
-                .authorities("ROLE_A")
-                .scopes("all")
-                .authorizedGrantTypes("client_credentials");
+
+        clients.inMemory().withClient("my_app").authorizedGrantTypes("password")
+                .authorities("all").scopes("all").resourceIds("oauth2-resource").accessTokenValiditySeconds(5000)
+                .secret(passwordEncoder.encode("1"));
     }
 
     /*

@@ -2,13 +2,11 @@ package com.exalt.sparepartsmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@NoArgsConstructor
 @Entity
 public class Role {
     @Id

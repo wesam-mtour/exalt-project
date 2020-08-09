@@ -22,7 +22,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     String findByPhoneNumberNQ(String phoneNumber);
 
     /*
-    This query used only in security session
+    This queries used only in security session
      */
     @Query(value = "select * from employee e where e.name=:name", nativeQuery = true)
     Employee findUserByNameNQ(String name);

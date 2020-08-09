@@ -2,13 +2,10 @@ package com.exalt.sparepartsmanagement.model;
 
 import com.exalt.sparepartsmanagement.phoneValidation.PhoneValidator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-
-@NoArgsConstructor
 @Entity
 public class Customer {
     @Id
