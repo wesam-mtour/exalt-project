@@ -1,11 +1,24 @@
 server:
   port: 8081
+
 security:
   oauth2:
     client:
       client-id: my_app
       client-secret: 1
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+
 spring:
+  application :
+    name: MANAGEMENT-SERVICE
   jpa:
     hibernate:
       ddl-auto: update

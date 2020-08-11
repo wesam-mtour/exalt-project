@@ -3,7 +3,7 @@ package com;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /*
  * The @SpringBootApplication annotation is equivalent to using:
@@ -19,6 +19,7 @@ automatically configures classes present on the classpath
 annotation to tell Spring the packages to scan for annotated components
  */
 @SpringBootApplication
+@EnableEurekaClient
 @MapperScan(value = "com.exalt.sparepartsmanagement.mapper")
 public class MyApplication {
 
