@@ -8,11 +8,9 @@ import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 /*
@@ -61,5 +59,5 @@ public class ProductController {
         productService.delete(oemOrProductName);
         return " product deleted successfully";
     }
-    
+
 }
