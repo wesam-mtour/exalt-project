@@ -1,4 +1,4 @@
-package com.exalt.sparepartsmanagement.controller;
+package com.exalt.sparepartsmanagement.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
