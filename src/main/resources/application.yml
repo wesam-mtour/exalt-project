@@ -28,12 +28,6 @@ spring:
     username: root
     password: 12345
   kafka:
-    consumer:
-      bootstarp-servers: localhost:9092
-      group-id: "my_group_id"
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     producer:
       bootstarp-servers: locahost:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
