@@ -21,10 +21,14 @@ spring:
     name: MANAGEMENT-SERVICE
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate #  is important. It tries to validate the database schema according to the entities that ->
+      #you have created in the application and throws an error if the schema doesn’t match the entity specifications.
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect #to provide the configuration of SQL MyISAM and InnoDB.
     show-sql: true
+  flyway:
+    baseline-on-migrate: true
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/auto_spare_parts_management_system?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/flyway?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
     password: 12345
   kafka:

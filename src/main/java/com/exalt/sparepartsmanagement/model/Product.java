@@ -30,8 +30,7 @@ public class Product {
 
     private String producers;
 
-    public Product() {
-    }
+    private String description;
 
     public String getOem() {
         return oem;
@@ -87,6 +86,13 @@ public class Product {
 
     public void setProducers(String producers) {
         this.producers = producers;
+    }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
