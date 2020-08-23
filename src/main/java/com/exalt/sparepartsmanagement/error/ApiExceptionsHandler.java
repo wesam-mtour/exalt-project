@@ -1,10 +1,7 @@
 package com.exalt.sparepartsmanagement.error;
 
 
-import com.exalt.sparepartsmanagement.error.exceptions.BadRequestExceptions;
-import com.exalt.sparepartsmanagement.error.exceptions.ConflictExceptions;
-import com.exalt.sparepartsmanagement.error.exceptions.FileNotFoundExceptions;
-import com.exalt.sparepartsmanagement.error.exceptions.NotFoundExceptions;
+import com.exalt.sparepartsmanagement.error.exceptions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -66,6 +63,12 @@ public class ApiExceptionsHandler extends ResponseEntityExceptionHandler { // be
      */
     @ExceptionHandler(BadRequestExceptions.class)
     public ResponseEntity<ErrorFeatures> handleApiException(BadRequestExceptions ex, WebRequest request) {
+        logger.info("ApiExceptionsHandler class");
+        ErrorFeatures error = new ErrorFeatures(ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(error, ex.getStatus());
+    }
+    @ExceptionHandler
+    public ResponseEntity<ErrorFeatures> handleApiException(InvalidHeaderFieldException ex, WebRequest request) {
         logger.info("ApiExceptionsHandler class");
         ErrorFeatures error = new ErrorFeatures(ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(error, ex.getStatus());

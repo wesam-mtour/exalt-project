@@ -13,7 +13,7 @@ import org.springframework.security.web.session.ConcurrentSessionFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(new CustomGatewayFilter(), ConcurrentSessionFilter.class);
+      //  http.addFilterBefore(new CustomGatewayFilter(), ConcurrentSessionFilter.class);
     }
 
 }
